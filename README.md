@@ -1,1 +1,2 @@
-# ITechArt_Calculator
+# ITechArt Calculator
+## Pavarha Maksim

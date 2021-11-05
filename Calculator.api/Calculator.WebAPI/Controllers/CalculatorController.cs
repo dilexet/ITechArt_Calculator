@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Calculator.BLL.Abstract;
 using Calculator.BLL.Enums;
-using Calculator.BLL.Model;
 using Calculator.WebAPI.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,13 +28,13 @@ namespace Calculator.WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("calculator")]
-        public async Task<IActionResult> Calculator(OperationViewModel operationViewModel)
+        [HttpPost("calculate")]
+        public async Task<IActionResult> Calculator(string expression)
         {
             OperationResultViewModel operationResultViewModel;
             try
             {
-                var result = await _calculatorService.Calculate(_mapper.Map<Operation>(operationViewModel));
+                var result = await _calculatorService.Calculate(expression);
                 if (result.StatusType == StatusType.Error)
                 {
                     return BadRequest(new Response()
@@ -55,7 +54,7 @@ namespace Calculator.WebAPI.Controllers
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Status = "error",
-                    Message = "Server error"
+                    Message = "Syntax error!"
                 });
             }
 

@@ -9,11 +9,7 @@ namespace Calculator.WebAPI.Mapping
     {
         public MapperProfile()
         {
-            CreateMap<OperationViewModel, Operation>();
             CreateMap<OperationResult, OperationResultViewModel>();
-
-            CreateMap<Operation, OperationResult>();
-
 
             CreateMap<OperationResult, Expression>();
                 // .ForMember(dest => dest.OperationType, source => source.MapFrom(res => res.OperationType));

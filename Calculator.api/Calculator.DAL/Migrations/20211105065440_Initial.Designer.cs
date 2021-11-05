@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Calculator.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211104162235_Initial")]
+    [Migration("20211105065440_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,8 @@ namespace Calculator.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OperationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<double>("OperatorA")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OperatorB")
-                        .HasColumnType("float");
+                    b.Property<string>("MathExpression")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Result")
                         .HasColumnType("float");

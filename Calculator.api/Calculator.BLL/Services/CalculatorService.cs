@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -26,48 +25,13 @@ namespace Calculator.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<StatusResult> Calculate(Operation operation)
+        public async Task<StatusResult> Calculate(string expression)
         {
-            Double result;
-            switch (operation.OperationType)
-            {
-                case '+':
-                {
-                    result = operation.OperatorA + operation.OperatorB;
-                    break;
-                }
-                case '-':
-                {
-                    result = operation.OperatorA - operation.OperatorB;
-                    break;
-                }
-                case '*':
-                {
-                    result = operation.OperatorA * operation.OperatorB;
-                    break;
-                }
-                case '/':
-                {
-                    if (operation.OperatorB == 0)
-                    {
-                        return new StatusResult() { StatusType = StatusType.Error, Result = "Division by zero." };
-                    }
+            utils.Calculator calculator = new utils.Calculator();
 
-                    result = operation.OperatorA / operation.OperatorB;
-                    break;
-                }
-                case '^':
-                {
-                    result = Math.Pow(operation.OperatorA, operation.OperatorB);
-                    break;
-                }
-                default:
-                {
-                    return new StatusResult() { StatusType = StatusType.Error, Result = "Operator is incorrect." };
-                }
-            }
+            Double result = calculator.Calculate(expression);
 
-            OperationResult operationResult = _mapper.Map<OperationResult>(operation);
+            OperationResult operationResult = new OperationResult { MathExpression = expression, Result = result };
             operationResult.Result = result;
             try
             {

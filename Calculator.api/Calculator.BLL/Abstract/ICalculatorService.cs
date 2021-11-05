@@ -6,7 +6,7 @@ namespace Calculator.BLL.Abstract
 {
     public interface ICalculatorService
     {
-        Task<StatusResult> Calculate(Operation operation);
+        Task<StatusResult> Calculate(string expression);
         Task<IEnumerable<OperationResult>> GetAllExpression();
     }
 }

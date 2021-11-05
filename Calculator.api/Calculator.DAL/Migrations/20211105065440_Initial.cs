@@ -12,9 +12,7 @@ namespace Calculator.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OperatorA = table.Column<double>(type: "float", nullable: false),
-                    OperatorB = table.Column<double>(type: "float", nullable: false),
-                    OperationType = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    MathExpression = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Result = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>

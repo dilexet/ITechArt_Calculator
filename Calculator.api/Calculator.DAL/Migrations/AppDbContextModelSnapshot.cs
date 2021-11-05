@@ -25,15 +25,8 @@ namespace Calculator.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("OperationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<double>("OperatorA")
-                        .HasColumnType("float");
-
-                    b.Property<double>("OperatorB")
-                        .HasColumnType("float");
+                    b.Property<string>("MathExpression")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Result")
                         .HasColumnType("float");

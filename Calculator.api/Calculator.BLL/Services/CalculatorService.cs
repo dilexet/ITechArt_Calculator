@@ -47,7 +47,7 @@ namespace Calculator.BLL.Services
             {
                 // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
                 _log.LogError(e.ToString());
-                return new StatusResult() { StatusType = StatusType.Error, Result = "Error adding to database" };
+                return new StatusResult() { StatusType = StatusType.Error, Message = "Error adding to database" };
             }
 
             return new StatusResult() { StatusType = StatusType.Success, OperationResult = operationResult };

@@ -9,7 +9,7 @@ namespace Calculator.WebAPI.Mapping
     {
         public MapperProfile()
         {
-            CreateMap<OperationResult, OperationResultViewModel>();
+            CreateMap<OperationResult, OperationResult>();
 
             CreateMap<OperationResult, Expression>();
 

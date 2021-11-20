@@ -10,15 +10,17 @@ namespace Calculator.BLL.utils
     {
         private readonly IFormatProvider _formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
         private readonly ILogger<Calculator> _log;
+        private readonly IParser _parser;
 
-        public Calculator(ILogger<Calculator> log)
+        public Calculator(IParser parser ,ILogger<Calculator> log)
         {
+            _parser = parser;
             _log = log;
         }
 
         public double Calculate(string expression)
         {
-            var parseExpression = Parser.ParseExpression(expression);
+            var parseExpression = _parser.ParseExpression(expression);
             List<string> matches = new List<string>();
             foreach (var value in parseExpression)
             {

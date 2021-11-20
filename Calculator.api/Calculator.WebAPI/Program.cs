@@ -9,7 +9,6 @@ namespace Calculator.WebAPI
 {
     public class Program
     {
-        // TODO: create unit-tests for CalculatorService and Calculator
         public static void Main(string[] args)
         {
             Log.Logger = CreateLogger();

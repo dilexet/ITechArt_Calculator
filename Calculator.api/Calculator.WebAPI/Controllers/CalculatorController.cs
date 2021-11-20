@@ -53,7 +53,7 @@ namespace Calculator.WebAPI.Controllers
                     {
                         Code = StatusCodes.Status400BadRequest,
                         Status = "error",
-                        Message = result.Result
+                        Message = result.Message
                     });
                 }
 

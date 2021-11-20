@@ -2,6 +2,7 @@ using System;
 using AutoMapper;
 using Calculator.BLL.Abstract;
 using Calculator.BLL.Services;
+using Calculator.BLL.utils;
 using Calculator.DAL.Abstract;
 using Calculator.DAL.Factory;
 using Calculator.DAL.Repository;
@@ -46,8 +47,9 @@ namespace Calculator.WebAPI
                 new GenericRepository(connectionString, provider.GetService<IContextFactory>(),
                     provider.GetService<ILogger<GenericRepository>>()));
 
+            services.AddScoped<IParser, Parser>();
             services.AddScoped<ICalculator>(provider =>
-                new BLL.utils.Calculator(provider.GetService<ILogger<BLL.utils.Calculator>>()));
+                new BLL.utils.Calculator(provider.GetService<IParser>(),provider.GetService<ILogger<BLL.utils.Calculator>>()));
 
             services.AddScoped<ICalculatorService>(provider =>
                 new CalculatorService(provider.GetService<IRepository>(), provider.GetService<IMapper>(),

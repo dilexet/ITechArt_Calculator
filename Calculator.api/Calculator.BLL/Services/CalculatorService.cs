@@ -9,7 +9,7 @@ using Calculator.DAL.Abstract;
 using Calculator.DAL.Entity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Calculator.BLL.Services
 {
@@ -17,19 +17,21 @@ namespace Calculator.BLL.Services
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ICalculator _calculator;
+        private readonly ILogger<CalculatorService> _log;
 
-
-        public CalculatorService(IRepository repository, IMapper mapper)
+        public CalculatorService(IRepository repository, IMapper mapper, ICalculator calculator,
+            ILogger<CalculatorService> log)
         {
             _repository = repository;
             _mapper = mapper;
+            _calculator = calculator;
+            _log = log;
         }
 
         public async Task<StatusResult> Calculate(string expression)
         {
-            utils.Calculator calculator = new utils.Calculator();
-
-            Double result = calculator.Calculate(expression);
+            Double result = _calculator.Calculate(expression);
 
             OperationResult operationResult = new OperationResult { MathExpression = expression, Result = result };
             operationResult.Result = result;
@@ -44,7 +46,7 @@ namespace Calculator.BLL.Services
             catch (SqlException e)
             {
                 // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return new StatusResult() { StatusType = StatusType.Error, Result = "Error adding to database" };
             }
 

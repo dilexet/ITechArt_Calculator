@@ -12,10 +12,8 @@ namespace Calculator.WebAPI.Mapping
             CreateMap<OperationResult, OperationResultViewModel>();
 
             CreateMap<OperationResult, Expression>();
-                // .ForMember(dest => dest.OperationType, source => source.MapFrom(res => res.OperationType));
 
             CreateMap<Expression, OperationResult>();
-                // .ForMember(dest => dest.OperationType, source => source.MapFrom(res => res.OperationType));
         }
     }
 }

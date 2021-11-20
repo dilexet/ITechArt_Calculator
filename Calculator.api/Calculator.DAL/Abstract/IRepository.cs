@@ -15,7 +15,7 @@ namespace Calculator.DAL.Abstract
 
         Task<TEntity> SingleOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
         Task<bool> UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
-        Task<bool> RemoveAsync<TEntity>(TEntity entity) where TEntity : class;
+        bool Remove<TEntity>(TEntity entity) where TEntity : class;
         Task<bool> SaveAsync();
     }
 }

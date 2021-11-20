@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Serilog;
 
 namespace Calculator.BLL.utils
 {
@@ -17,6 +16,7 @@ namespace Calculator.BLL.utils
             {
                 throw new ArgumentException("Syntax Error!");
             }
+
             return matches.ToList();
         }
     }

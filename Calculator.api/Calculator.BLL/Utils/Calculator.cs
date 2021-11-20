@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Serilog;
+using Calculator.BLL.Abstract;
+using Microsoft.Extensions.Logging;
 
 namespace Calculator.BLL.utils
 {
-    public class Calculator
+    public class Calculator : ICalculator
     {
         private readonly IFormatProvider _formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+        private readonly ILogger<Calculator> _log;
+
+        public Calculator(ILogger<Calculator> log)
+        {
+            _log = log;
+        }
 
         public double Calculate(string expression)
         {
@@ -27,7 +34,7 @@ namespace Calculator.BLL.utils
             catch (Exception e)
             {
                 // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 throw new Exception("Syntax error!");
             }
         }
@@ -178,6 +185,7 @@ namespace Calculator.BLL.utils
             bool isDigit = true;
             try
             {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 Double.Parse(digit, _formatter);
             }
             catch (FormatException)

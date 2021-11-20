@@ -6,19 +6,21 @@ using Calculator.DAL.Abstract;
 using Calculator.DAL.Context;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
-
 namespace Calculator.DAL.Repository
 {
     public class GenericRepository : BaseRepository, IRepository
     {
         private AppDbContext Context { get; }
+        private readonly ILogger<GenericRepository> _log;
 
-        public GenericRepository(string connectionString, IContextFactory contextFactory)
+        public GenericRepository(string connectionString, IContextFactory contextFactory,
+            ILogger<GenericRepository> log)
             : base(connectionString, contextFactory)
         {
+            _log = log;
             Context = contextFactory.CreateDbContext(connectionString);
         }
 
@@ -36,7 +38,7 @@ namespace Calculator.DAL.Repository
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
             }
 
             return entity;
@@ -54,7 +56,7 @@ namespace Calculator.DAL.Repository
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
             }
 
             return entities;
@@ -72,7 +74,7 @@ namespace Calculator.DAL.Repository
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
             }
 
             return entity;
@@ -92,7 +94,7 @@ namespace Calculator.DAL.Repository
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return false;
             }
         }
@@ -111,12 +113,12 @@ namespace Calculator.DAL.Repository
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return false;
             }
         }
 
-        public async Task<bool> RemoveAsync<TEntity>(TEntity entity) where TEntity : class
+        public bool Remove<TEntity>(TEntity entity) where TEntity : class
         {
             if (entity == null)
             {
@@ -125,12 +127,12 @@ namespace Calculator.DAL.Repository
 
             try
             {
-                await Task.Factory.StartNew(() => { Context.Set<TEntity>().Remove(entity); });
+                Context.Set<TEntity>().Remove(entity);
                 return true;
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return false;
             }
         }
@@ -139,12 +141,12 @@ namespace Calculator.DAL.Repository
         {
             try
             {
-                await Context.SaveChangesAsync();
+                await Context.SaveChangesAsync(); // return int
                 return true;
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return false;
             }
         }

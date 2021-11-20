@@ -8,7 +8,7 @@ using Calculator.WebAPI.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
@@ -20,17 +20,29 @@ namespace Calculator.WebAPI.Controllers
     {
         private readonly ICalculatorService _calculatorService;
         private readonly IMapper _mapper;
+        private readonly ILogger<CalculatorController> _log;
 
-
-        public CalculatorController(ICalculatorService calculatorService, IMapper mapper)
+        public CalculatorController(ICalculatorService calculatorService, IMapper mapper,
+            ILogger<CalculatorController> log)
         {
             _calculatorService = calculatorService;
             _mapper = mapper;
+            _log = log;
         }
 
         [HttpPost("calculate")]
         public async Task<IActionResult> Calculator(string expression)
         {
+            if (string.IsNullOrEmpty(expression) || expression.Contains(','))
+            {
+                return BadRequest(new Response()
+                {
+                    Code = StatusCodes.Status400BadRequest,
+                    Status = "error",
+                    Message = "Syntax error!"
+                });
+            }
+
             OperationResultViewModel operationResultViewModel;
             try
             {
@@ -49,7 +61,7 @@ namespace Calculator.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return BadRequest(new Response()
                 {
                     Code = StatusCodes.Status400BadRequest,
@@ -79,7 +91,7 @@ namespace Calculator.WebAPI.Controllers
             }
             catch (SqlException e)
             {
-                Log.Error(e.ToString());
+                _log.LogError(e.ToString());
                 return BadRequest(new Response()
                 {
                     Code = StatusCodes.Status400BadRequest,
